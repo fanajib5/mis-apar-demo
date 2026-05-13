@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Laravel Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mis_apar_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    environment:
+      APP_ENV: production
+      APP_DEBUG: 'false'
+      APP_KEY: ${APP_KEY:-base64:DEMO_KEY_CHANGE_IN_PRODUCTION}
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: sqlite
+      DATABASE_URL: file:/app/database/database.sqlite
+      CACHE_STORE: file
+      QUEUE_CONNECTION: database
+      SESSION_DRIVER: database
+      MAIL_MAILER: log
+      LOG_CHANNEL: stack
+    ports:
+      - "8000:80"
+    networks:
+      - mis_apar_network
+
+  # MySQL (alternative to SQLite)
+  mysql:
+    image: mysql:8.4
+    container_name: mis_apar_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mis_apar_network
+
+  # Redis (opsional untuk queue)
+  redis:
+    image: redis:7-alpine
+    container_name: mis_apar_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mis_apar_network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  mis_apar_network:
+    driver: bridge

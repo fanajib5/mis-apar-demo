@@ -74,7 +74,15 @@ class DemoDataSeeder extends Seeder
             ['name' => 'Rudi Hartono', 'phone' => '08333333333', 'email' => 'rudi@demo.com'],
         ]);
 
-        $salesPeople->each(fn ($data) => SalesPerson::create(array_merge($data, ['team_id' => $team->id])));
+         $salesPeople->each(function ($data) use ($team) {
+             $salesPerson = SalesPerson::create(array_merge($data, ['team_id' => $team->id]));
+             
+             // Find associated user and assign sales role
+             $user = User::where('email', $data['email'])->first();
+             if ($user) {
+                 $user->assignRole('sales');
+             }
+         });
 
         $plan = CommissionPlan::create([
             'team_id' => $team->id,

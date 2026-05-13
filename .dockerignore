@@ -1,0 +1,57 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+vendor
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Laravel
+storage/*.key
+storage/logs/*.log
+storage/pail
+bootstrap/cache/*.php
+
+# Build outputs
+public/build
+public/hot
+public/storage
+
+# IDE
+.idea
+.vscode
+.phpactor.json
+.DS_Store
+
+# Tests
+.phpunit.cache
+.phpunit.result.cache
+
+# Misc
+npm-debug.log
+yarn-error.log
+auth.json
+.fleet
+.nova
+
+# Docs
+README.md
+DEPLOYMENT.md
+
+# CI/CD
+.github
+.gitlab
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Coolify
+coolify
