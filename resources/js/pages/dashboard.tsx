@@ -1,25 +1,51 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { dashboard } from '@/routes';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { BreadcrumbItem } from '@/types';
 
-export default function Dashboard() {
+export default function Dashboard({ stats }: { stats?: { totalCustomers: number; totalProducts: number; totalOrders: number; totalRevenue: number; pendingInvoices: number; expiringApar: number } }) {
     return (
         <>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <h1 className="text-2xl font-bold">Dashboard</h1>
+
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Total Customers</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold">{stats?.totalCustomers ?? 0}</p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Total Products</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold">{stats?.totalProducts ?? 0}</p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Total Orders</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold">{stats?.totalOrders ?? 0}</p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Revenue (Month)</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold text-green-600">Rp {(stats?.totalRevenue ?? 0).toLocaleString()}</p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Pending Invoices</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold text-amber-600">{stats?.pendingInvoices ?? 0}</p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Expiring APAR (30d)</CardTitle></CardHeader>
+                        <CardContent>
+                            <p className="text-3xl font-bold text-red-600">{stats?.expiringApar ?? 0}</p>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </>
@@ -30,7 +56,7 @@ Dashboard.layout = (props: { currentTeam?: { slug: string } | null }) => ({
     breadcrumbs: [
         {
             title: 'Dashboard',
-            href: props.currentTeam ? dashboard(props.currentTeam.slug) : '/',
+            href: props.currentTeam ? `/${props.currentTeam.slug}/dashboard` : '/',
         },
-    ],
+    ] as BreadcrumbItem[],
 });
