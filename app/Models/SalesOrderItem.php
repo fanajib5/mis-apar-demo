@@ -13,6 +13,14 @@ class SalesOrderItem extends Model
 {
     use HasFactory, TeamScoped;
 
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+        ];
+    }
+
     public function salesOrder(): BelongsTo
     {
         return $this->belongsTo(SalesOrder::class);

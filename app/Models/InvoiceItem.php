@@ -13,6 +13,14 @@ class InvoiceItem extends Model
 {
     use HasFactory, TeamScoped;
 
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+        ];
+    }
+
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);

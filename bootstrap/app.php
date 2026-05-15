@@ -26,6 +26,10 @@ return Application::configure(basePath: dirname(__DIR__))
             SetTeamUrlDefaults::class,
             IdentifyTenant::class,
         ]);
+
+        $middleware->api(append: [
+            IdentifyTenant::class,
+        ]);
     })
     ->withProviders([
         TenantServiceProvider::class,
