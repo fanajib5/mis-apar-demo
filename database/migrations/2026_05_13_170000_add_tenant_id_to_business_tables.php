@@ -36,7 +36,7 @@ return new class extends Migration
     public function up(): void
     {
         foreach ($this->tables as $table) {
-            if (! Schema::hasTable($table) || ! Schema::hasColumn($table, 'tenant_id')) {
+            if (Schema::hasTable($table) && ! Schema::hasColumn($table, 'tenant_id')) {
                 Schema::table($table, function (Blueprint $table) {
                     // Add NOT NULL column; existing fresh tables are empty so constraint is safe.
                     $table->unsignedBigInteger('tenant_id')->after('id');

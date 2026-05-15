@@ -93,8 +93,8 @@ class TenantManager
             $baseDomain = preg_replace('/^www\./', '', strtolower($baseDomain));
 
             // Check if host ends with the base domain
-            if (stripos($host, $baseDomain) !== false) {
-                $subdomain = str_ireplace('.'.$baseDomain, '', $host);
+            if (str_ends_with($host, '.'.$baseDomain)) {
+                $subdomain = substr($host, 0, -strlen('.'.$baseDomain));
                 if ($subdomain && ! in_array($subdomain, ['www', 'api', 'app', 'admin'])) {
                     $tenant = TenantModel::where('domain', $subdomain)->first();
                     if ($tenant) {
