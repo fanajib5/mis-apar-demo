@@ -1,12 +1,9 @@
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, Form, usePage, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { useState } from 'react';
 
 interface SalesPerson {
     id: number;
@@ -16,15 +13,13 @@ interface SalesPerson {
     is_active: boolean;
 }
 
-export default function SalesPeopleIndex({ salesPeople, filters }: { salesPeople: SalesPerson[]; filters: Record<string, string> }) {
+export default function SalesPeopleIndex({
+    salesPeople,
+}: {
+    salesPeople: SalesPerson[];
+}) {
     const page = usePage();
     const teamSlug = page.props.currentTeam?.slug ?? '';
-    const [search, setSearch] = useState(filters.search ?? '');
-
-    function handleSearch(e: React.FormEvent) {
-        e.preventDefault();
-        router.get(`/${teamSlug}/master/sales-people`, { search });
-    }
 
     function handleToggle(sp: SalesPerson) {
         router.patch(`/${teamSlug}/master/sales-people/${sp.id}`, {
@@ -38,67 +33,118 @@ export default function SalesPeopleIndex({ salesPeople, filters }: { salesPeople
     return (
         <>
             <Head title="Sales People" />
-            <div className="p-4 space-y-4">
-                <h1 className="text-2xl font-bold">Sales People</h1>
+            <AppLayout
+                breadcrumbs={
+                    SalesPeopleIndex.layout?.({
+                        currentTeam: page.props.currentTeam,
+                    })?.breadcrumbs ?? []
+                }
+            >
+                <div className="space-y-4 p-4">
+                    <h1 className="text-2xl font-bold">Sales People</h1>
 
-                <Form action={`/${teamSlug}/master/sales-people`} method="post" resetOnSuccess>
-                    {({ errors, processing }) => (
-                        <Card>
-                            <CardHeader><CardTitle>Add Sales Person</CardTitle></CardHeader>
-                            <CardContent className="flex gap-4 items-end">
-                                <div className="space-y-2 flex-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <input id="name" name="name" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" required />
-                                </div>
-                                <div className="space-y-2 flex-1">
-                                    <Label htmlFor="phone">Phone</Label>
-                                    <input id="phone" name="phone" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
-                                </div>
-                                <Button type="submit" disabled={processing}>Add</Button>
-                            </CardContent>
-                        </Card>
-                    )}
-                </Form>
+                    <Form
+                        action={`/${teamSlug}/master/sales-people`}
+                        method="post"
+                        resetOnSuccess
+                    >
+                        {({ processing }) => (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Add Sales Person</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex items-end gap-4">
+                                    <div className="flex-1 space-y-2">
+                                        <Label htmlFor="name">Name</Label>
+                                        <input
+                                            id="name"
+                                            name="name"
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="flex-1 space-y-2">
+                                        <Label htmlFor="phone">Phone</Label>
+                                        <input
+                                            id="phone"
+                                            name="phone"
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                        />
+                                    </div>
+                                    <Button type="submit" disabled={processing}>
+                                        Add
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </Form>
 
-                <Card>
-                    <CardHeader><CardTitle>All Sales People</CardTitle></CardHeader>
-                    <CardContent>
-                        <table className="w-full text-left text-sm">
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="py-2 px-1">Name</th>
-                                    <th className="py-2 px-1">Phone</th>
-                                    <th className="py-2 px-1">Email</th>
-                                    <th className="py-2 px-1">Active</th>
-                                    <th className="py-2 px-1"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {salesPeople.map((sp) => (
-                                    <tr key={sp.id} className="border-b hover:bg-muted/50">
-                                        <td className="py-2 px-1">{sp.name}</td>
-                                        <td className="py-2 px-1">{sp.phone ?? '-'}</td>
-                                        <td className="py-2 px-1">{sp.email ?? '-'}</td>
-                                        <td className="py-2 px-1">{sp.is_active ? 'Yes' : 'No'}</td>
-                                        <td className="py-2 px-1">
-                                            <Button variant="outline" size="sm" onClick={() => handleToggle(sp)}>
-                                                {sp.is_active ? 'Deactivate' : 'Activate'}
-                                            </Button>
-                                        </td>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>All Sales People</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <table className="w-full text-left text-sm">
+                                <thead>
+                                    <tr className="border-b">
+                                        <th className="px-1 py-2">Name</th>
+                                        <th className="px-1 py-2">Phone</th>
+                                        <th className="px-1 py-2">Email</th>
+                                        <th className="px-1 py-2">Active</th>
+                                        <th className="px-1 py-2"></th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </CardContent>
-                </Card>
-            </div>
+                                </thead>
+                                <tbody>
+                                    {salesPeople.map((sp) => (
+                                        <tr
+                                            key={sp.id}
+                                            className="border-b hover:bg-muted/50"
+                                        >
+                                            <td className="px-1 py-2">
+                                                {sp.name}
+                                            </td>
+                                            <td className="px-1 py-2">
+                                                {sp.phone ?? '-'}
+                                            </td>
+                                            <td className="px-1 py-2">
+                                                {sp.email ?? '-'}
+                                            </td>
+                                            <td className="px-1 py-2">
+                                                {sp.is_active ? 'Yes' : 'No'}
+                                            </td>
+                                            <td className="px-1 py-2">
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() =>
+                                                        handleToggle(sp)
+                                                    }
+                                                >
+                                                    {sp.is_active
+                                                        ? 'Deactivate'
+                                                        : 'Activate'}
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </CardContent>
+                    </Card>
+                </div>
+            </AppLayout>
         </>
     );
 }
 
-SalesPeopleIndex.layout = (props: { currentTeam?: { slug: string } | null }) => ({
+SalesPeopleIndex.layout = (props: {
+    currentTeam?: { slug: string } | null;
+}) => ({
     breadcrumbs: [
-        { title: 'Dashboard', href: `/${props.currentTeam?.slug ?? ''}/dashboard` },
+        {
+            title: 'Dashboard',
+            href: `/${props.currentTeam?.slug ?? ''}/dashboard`,
+        },
         { title: 'Sales People', href: '#' },
     ] as BreadcrumbItem[],
 });

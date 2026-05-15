@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Concerns\TeamScoped;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['sales_order_id', 'product_id', 'quantity', 'unit_price', 'subtotal'])]
+#[Fillable(['sales_order_id', 'product_id', 'quantity', 'unit_price', 'subtotal', 'tenant_id'])]
 class SalesOrderItem extends Model
 {
-    use HasFactory;
+    use HasFactory, TeamScoped;
 
     protected function casts(): array
     {

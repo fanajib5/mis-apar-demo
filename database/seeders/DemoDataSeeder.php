@@ -12,12 +12,16 @@ use App\Models\SalesOrder;
 use App\Models\SalesPerson;
 use App\Models\Team;
 use App\Models\User;
+use App\Support\Tenant;
 use Illuminate\Database\Seeder;
 
 class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
+        // Ensure tenant context for all created models
+        Tenant::fake(1);
+
         $user = User::firstOrCreate(
             ['email' => 'demo@aparmanagement.com'],
             [
@@ -74,15 +78,15 @@ class DemoDataSeeder extends Seeder
             ['name' => 'Rudi Hartono', 'phone' => '08333333333', 'email' => 'rudi@demo.com'],
         ]);
 
-         $salesPeople->each(function ($data) use ($team) {
-             $salesPerson = SalesPerson::create(array_merge($data, ['team_id' => $team->id]));
-             
-             // Find associated user and assign sales role
-             $user = User::where('email', $data['email'])->first();
-             if ($user) {
-                 $user->assignRole('sales');
-             }
-         });
+        $salesPeople->each(function ($data) use ($team) {
+            $salesPerson = SalesPerson::create(array_merge($data, ['team_id' => $team->id]));
+
+            // Find associated user and assign sales role
+            $user = User::where('email', $data['email'])->first();
+            if ($user) {
+                $user->assignRole('sales');
+            }
+        });
 
         $plan = CommissionPlan::create([
             'team_id' => $team->id,

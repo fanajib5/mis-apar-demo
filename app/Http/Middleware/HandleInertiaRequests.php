@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Tenant;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -37,6 +38,8 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
+        $tenant = Tenant::current();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -46,6 +49,15 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'currentTeam' => fn () => $user?->currentTeam ? $user->toUserTeam($user->currentTeam) : null,
             'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
+            // Share tenant and branding info
+            'tenant' => fn () => $tenant ? [
+                'id' => $tenant->id,
+                'name' => $tenant->name,
+                'domain' => $tenant->domain,
+                'brand' => $tenant->branding(),
+            ] : null,
+            'brand' => fn () => $tenant ? $tenant->branding() : config('branding.defaults'),
+            'license' => fn () => $tenant ? (optional($tenant->license)->features ?? []) : [],
         ];
     }
 }

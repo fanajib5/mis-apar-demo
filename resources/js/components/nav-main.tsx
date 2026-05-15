@@ -35,7 +35,11 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
                     return (
                         <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton asChild isActive={isCurrentUrl(item.href)} tooltip={{ children: item.title }}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={isCurrentUrl(item.href)}
+                                tooltip={{ children: item.title }}
+                            >
                                 <Link href={item.href} prefetch>
                                     {item.icon && <item.icon />}
                                     <span>{item.title}</span>
@@ -62,14 +66,19 @@ function CollapsibleGroup({ item }: { item: NavItem }) {
                     <SidebarMenuButton tooltip={{ children: item.title }}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
-                        <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-0 rotate-[-90deg]" />
+                        <ChevronDown className="ml-auto rotate-[-90deg] transition-transform group-data-[state=open]/collapsible:rotate-0" />
                     </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                     <SidebarMenuSub>
                         {item.children?.map((child) => (
                             <SidebarMenuSubItem key={child.title}>
-                                <SidebarMenuSubButton asChild isActive={currentUrl.startsWith(toUrl(child.href))}>
+                                <SidebarMenuSubButton
+                                    asChild
+                                    isActive={currentUrl.startsWith(
+                                        toUrl(child.href),
+                                    )}
+                                >
                                     <Link href={child.href} prefetch>
                                         {child.icon && <child.icon />}
                                         <span>{child.title}</span>

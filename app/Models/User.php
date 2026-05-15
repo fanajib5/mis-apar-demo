@@ -18,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasTeams, HasRoles, Notifiable, TwoFactorAuthenticatable {
+    use HasFactory, HasRoles, HasTeams, Notifiable, TwoFactorAuthenticatable {
         HasTeams::teams insteadof HasRoles;
         HasRoles::teams as spatieTeams;
     }

@@ -1,8 +1,21 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
-    Building2, Package, Users, Percent, ShoppingCart, FileText,
-    CreditCard, Truck, BadgeDollarSign, Flame, ClipboardCheck,
-    History, Award, Warehouse, ListChecks, LayoutGrid,
+    Building2,
+    Package,
+    Users,
+    Percent,
+    ShoppingCart,
+    FileText,
+    CreditCard,
+    Truck,
+    BadgeDollarSign,
+    Flame,
+    ClipboardCheck,
+    History,
+    Award,
+    Warehouse,
+    ListChecks,
+    LayoutGrid,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -33,10 +46,26 @@ export function AppSidebar() {
             isActive: false,
             href: '#',
             children: [
-                { title: 'Customers', href: `/${teamSlug}/master/customers`, icon: Building2 },
-                { title: 'Products', href: `/${teamSlug}/master/products`, icon: Package },
-                { title: 'Sales People', href: `/${teamSlug}/master/sales-people`, icon: Users },
-                { title: 'Commission Plans', href: `/${teamSlug}/master/commission-plans`, icon: Percent },
+                {
+                    title: 'Customers',
+                    href: `/${teamSlug}/master/customers`,
+                    icon: Building2,
+                },
+                {
+                    title: 'Products',
+                    href: `/${teamSlug}/master/products`,
+                    icon: Package,
+                },
+                {
+                    title: 'Sales People',
+                    href: `/${teamSlug}/master/sales-people`,
+                    icon: Users,
+                },
+                {
+                    title: 'Commission Plans',
+                    href: `/${teamSlug}/master/commission-plans`,
+                    icon: Percent,
+                },
             ],
         },
         {
@@ -45,11 +74,31 @@ export function AppSidebar() {
             isActive: false,
             href: '#',
             children: [
-                { title: 'Sales Orders', href: `/${teamSlug}/sales/orders`, icon: ShoppingCart },
-                { title: 'Invoices', href: `/${teamSlug}/sales/invoices`, icon: FileText },
-                { title: 'Payments', href: `/${teamSlug}/sales/payments`, icon: CreditCard },
-                { title: 'Surat Jalan', href: `/${teamSlug}/sales/surat-jalans`, icon: Truck },
-                { title: 'Commissions', href: `/${teamSlug}/sales/commissions`, icon: BadgeDollarSign },
+                {
+                    title: 'Sales Orders',
+                    href: `/${teamSlug}/sales/orders`,
+                    icon: ShoppingCart,
+                },
+                {
+                    title: 'Invoices',
+                    href: `/${teamSlug}/sales/invoices`,
+                    icon: FileText,
+                },
+                {
+                    title: 'Payments',
+                    href: `/${teamSlug}/sales/payments`,
+                    icon: CreditCard,
+                },
+                {
+                    title: 'Surat Jalan',
+                    href: `/${teamSlug}/sales/surat-jalans`,
+                    icon: Truck,
+                },
+                {
+                    title: 'Commissions',
+                    href: `/${teamSlug}/sales/commissions`,
+                    icon: BadgeDollarSign,
+                },
             ],
         },
         {
@@ -58,10 +107,26 @@ export function AppSidebar() {
             isActive: false,
             href: '#',
             children: [
-                { title: 'APAR Units', href: `/${teamSlug}/apar/units`, icon: Flame },
-                { title: 'Inspections', href: `/${teamSlug}/apar/inspections`, icon: ClipboardCheck },
-                { title: 'Service History', href: `/${teamSlug}/apar/service-histories`, icon: History },
-                { title: 'Certificates', href: `/${teamSlug}/apar/certificates`, icon: Award },
+                {
+                    title: 'APAR Units',
+                    href: `/${teamSlug}/apar/units`,
+                    icon: Flame,
+                },
+                {
+                    title: 'Inspections',
+                    href: `/${teamSlug}/apar/inspections`,
+                    icon: ClipboardCheck,
+                },
+                {
+                    title: 'Service History',
+                    href: `/${teamSlug}/apar/service-histories`,
+                    icon: History,
+                },
+                {
+                    title: 'Certificates',
+                    href: `/${teamSlug}/apar/certificates`,
+                    icon: Award,
+                },
             ],
         },
         {
@@ -70,8 +135,16 @@ export function AppSidebar() {
             isActive: false,
             href: '#',
             children: [
-                { title: 'Stock', href: `/${teamSlug}/inventory/stock`, icon: Package },
-                { title: 'Adjustments', href: `/${teamSlug}/inventory/adjustments`, icon: ListChecks },
+                {
+                    title: 'Stock',
+                    href: `/${teamSlug}/inventory/stock`,
+                    icon: Package,
+                },
+                {
+                    title: 'Adjustments',
+                    href: `/${teamSlug}/inventory/adjustments`,
+                    icon: ListChecks,
+                },
             ],
         },
     ];
