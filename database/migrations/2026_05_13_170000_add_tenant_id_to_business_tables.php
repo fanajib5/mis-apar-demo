@@ -38,8 +38,13 @@ return new class extends Migration
         foreach ($this->tables as $table) {
             if (! Schema::hasTable($table) || ! Schema::hasColumn($table, 'tenant_id')) {
                 Schema::table($table, function (Blueprint $table) {
-                    $table->unsignedBigInteger('tenant_id')->default(1)->after('id');
+                    // Add NOT NULL column; existing fresh tables are empty so constraint is safe.
+                    $table->unsignedBigInteger('tenant_id')->after('id');
                     $table->index('tenant_id');
+                    $table->foreign('tenant_id')
+                        ->references('id')
+                        ->on('tenants')
+                        ->cascadeOnDelete();
                 });
             }
         }
@@ -53,6 +58,7 @@ return new class extends Migration
         foreach ($this->tables as $table) {
             if (Schema::hasTable($table) && Schema::hasColumn($table, 'tenant_id')) {
                 Schema::table($table, function (Blueprint $table) {
+                    $table->dropForeign(['tenant_id']);
                     $table->dropIndex(['tenant_id']);
                     $table->dropColumn('tenant_id');
                 });

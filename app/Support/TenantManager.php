@@ -83,12 +83,24 @@ class TenantManager
         }
 
         // 2. Subdomain: tenant.aparmanagement.com
-        $host = $request->getHost();
-        $subdomain = explode('.', $host)[0] ?? null;
-        if ($subdomain && ! in_array($subdomain, ['www', 'api', 'app', 'admin'])) {
-            $tenant = TenantModel::where('domain', $subdomain)->first();
-            if ($tenant) {
-                return $tenant;
+        $host = strtolower($request->getHost());
+        // Strip port number (e.g., localhost:8000 -> localhost)
+        $host = preg_replace('/:\d+$/', '', $host);
+
+        // Skip IP addresses and localhost
+        if (! filter_var($host, FILTER_VALIDATE_IP) && $host !== 'localhost' && $host !== '127.0.0.1') {
+            $baseDomain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'aparmanagement.com';
+            $baseDomain = preg_replace('/^www\./', '', strtolower($baseDomain));
+
+            // Check if host ends with the base domain
+            if (stripos($host, $baseDomain) !== false) {
+                $subdomain = str_ireplace('.'.$baseDomain, '', $host);
+                if ($subdomain && ! in_array($subdomain, ['www', 'api', 'app', 'admin'])) {
+                    $tenant = TenantModel::where('domain', $subdomain)->first();
+                    if ($tenant) {
+                        return $tenant;
+                    }
+                }
             }
         }
 

@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
                 'brand' => $tenant->branding(),
             ] : null,
             'brand' => fn () => $tenant ? $tenant->branding() : config('branding.defaults'),
-            'license' => fn () => $tenant && $tenant->relationLoaded('license') ? $tenant->license->features ?? [] : [],
+            'license' => fn () => $tenant ? (optional($tenant->license)->features ?? []) : [],
         ];
     }
 }

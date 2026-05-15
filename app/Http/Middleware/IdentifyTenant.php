@@ -20,6 +20,11 @@ class IdentifyTenant
         $tenant = app('tenant')->resolveForRequest($request);
 
         if ($tenant) {
+            // Ensure tenant is active
+            if (! $tenant->is_active) {
+                throw new TenantNotFoundException('Tenant is inactive.');
+            }
+
             Tenant::setCurrent($tenant);
 
             // Persist tenant_id in session for subsequent requests

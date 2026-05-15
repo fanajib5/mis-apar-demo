@@ -65,11 +65,6 @@ class Tenant extends Model
         return ! empty($this->logo_url) || ! empty($this->primary_color) || ! empty($this->custom_css_url);
     }
 
-    /**
-     * Get the license associated with the tenant.
-     */
-    public function license()
-    {
-        return $this->hasOne(License::class);
-    }
+    // License relationship will be added in Phase 2 (Licensing)
+    // public function license() { ... }
 }
